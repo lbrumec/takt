@@ -1,0 +1,427 @@
+<title>KOKOT Superchicken</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: poster-style comic-brutalist. Giant type, hard 4px shadows, one big hero rooster, a floppy cousin halfway down. */
+:root{
+  --bg:#FFD21F;        /* yolk */
+  --fg:#16120D;        /* ink */
+  --card:#FFFFFF;
+  --card-fg:#16120D;
+  --red:#FF3B2F;       /* comb */
+  --blue:#2B3BFF;      /* cape */
+  --pink:#FFB3C7;      /* boneless */
+  --line:#16120D;
+  --disc:#FFF7CF;
+  --display:'Dela Gothic One','Arial Black',Impact,sans-serif;
+  --body:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17130C;--fg:#FFF4D2;--card:#262014;--card-fg:#FFF4D2;--line:#FFD21F;--disc:#FFD21F;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17130C;--fg:#FFF4D2;--card:#262014;--card-fg:#FFF4D2;--line:#FFD21F;--disc:#FFD21F;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.5;padding-inline:clamp(16px,4vw,48px);padding-block:0;overflow-x:hidden}
+.wrap{max-width:1180px;margin-inline:auto}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:.95;margin:0;text-wrap:balance;text-transform:uppercase}
+.mono{font-family:var(--mono);font-weight:500;letter-spacing:.04em;text-transform:uppercase;font-size:12px}
+
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:18px}
+.logo{font-family:var(--display);font-size:26px;letter-spacing:-.01em}
+.logo sup{font-size:11px;font-family:var(--mono)}
+nav .links{display:flex;gap:22px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+nav a{font-weight:800;text-decoration:none}
+nav a:hover{text-decoration:underline;text-decoration-thickness:3px}
+
+.btn{font-family:var(--display);text-transform:uppercase;font-size:18px;background:var(--red);color:#fff;border:4px solid var(--ink,#16120D);padding:14px 22px;cursor:pointer;box-shadow:6px 6px 0 var(--ink,#16120D);transition:transform .08s,box-shadow .08s;border-radius:0}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #16120D}
+.btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 #16120D}
+.btn.blue{background:var(--blue)}
+.btn.small{font-size:14px;padding:9px 14px;box-shadow:4px 4px 0 #16120D}
+.btn,.btn.small{--ink:#16120D;border-color:#16120D}
+:root[data-theme="dark"] .btn{border-color:#16120D}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding-block:24px 56px}
+.hero h1{font-size:clamp(84px,17vw,230px);letter-spacing:-.04em;margin-left:-.04em}
+.hero h1 span{display:block}
+.hero h1 .sub{font-size:clamp(22px,3.4vw,44px);letter-spacing:0;margin-top:14px;color:var(--red);-webkit-text-stroke:0}
+.hero p.lead{font-size:clamp(18px,2vw,22px);max-width:30em;margin:22px 0 28px;font-weight:600}
+.hero .row{display:flex;gap:14px;flex-wrap:wrap}
+.stage{position:relative;aspect-ratio:1/1.05;min-width:0;max-width:100%}
+.disc{position:absolute;inset:6% 4% 8% 4%;background:var(--disc);border:5px solid var(--line);border-radius:50%}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;cursor:pointer}
+.bubble{position:absolute;top:0;left:-2%;max-width:62%;background:var(--card);color:var(--card-fg);border:4px solid var(--line);padding:10px 14px;font-weight:800;line-height:1.2;box-shadow:5px 5px 0 var(--line);transform:rotate(-3deg);z-index:2}
+.bubble::after{content:"";position:absolute;bottom:-18px;right:26px;width:18px;height:18px;background:var(--card);border-right:4px solid var(--line);border-bottom:4px solid var(--line);transform:rotate(45deg) translate(-4px,-4px)}
+.badge{position:absolute;right:-2%;bottom:6%;width:112px;height:112px;border-radius:50%;background:var(--red);color:#fff;border:4px solid #16120D;display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:15px;line-height:1;transform:rotate(12deg);z-index:2;text-transform:uppercase}
+
+#roo{transform-origin:50% 90%}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-1.2deg)}}
+.cape{transform-origin:46% 36%;animation:flap .5s ease-in-out infinite alternate}
+@keyframes flap{from{transform:skewY(-4deg) scaleX(1)}to{transform:skewY(5deg) scaleX(.93)}}
+.shake{animation:shake .5s}
+@keyframes shake{20%{transform:translate(-8px,3px) rotate(-3deg)}40%{transform:translate(8px,-3px) rotate(3deg)}60%{transform:translate(-6px,2px) rotate(-2deg)}80%{transform:translate(5px,-2px) rotate(1deg)}}
+
+/* ticker */
+.ticker{margin-inline:calc(-1*clamp(16px,4vw,48px));background:#16120D;color:#FFD21F;border-block:5px solid #16120D;overflow:hidden;white-space:nowrap;transform:rotate(-1.2deg);}
+.ticker div{display:inline-block;padding:14px 0;font-family:var(--display);font-size:26px;text-transform:uppercase;animation:tick 28s linear infinite}
+.ticker span{margin-inline:22px}
+.ticker i{color:#FF3B2F;font-style:normal}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+section{padding-block:84px 0}
+.kicker{display:inline-block;background:var(--fg);color:var(--bg);padding:4px 10px;margin-bottom:16px}
+h2{font-size:clamp(40px,7vw,92px);letter-spacing:-.02em}
+.intro{max-width:36em;font-weight:600;margin:18px 0 0}
+
+/* powers */
+.powers{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.pw{background:var(--card);color:var(--card-fg);border:4px solid var(--line);box-shadow:7px 7px 0 var(--line);padding:20px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.pw:nth-child(2){transform:rotate(1deg)}.pw:nth-child(3){transform:rotate(-1deg)}
+.pw .num{font-family:var(--display);font-size:clamp(38px,4.4vw,60px);line-height:1;color:var(--red);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.pw h3{font-size:19px;line-height:1.05}
+.pw p{margin:0;font-size:15px}
+
+/* crow meter */
+.meter{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;align-items:stretch}
+.panel{background:var(--card);color:var(--card-fg);border:4px solid var(--line);box-shadow:8px 8px 0 var(--line);padding:26px;min-width:0}
+.db{font-family:var(--display);font-size:clamp(56px,9vw,120px);line-height:1;font-variant-numeric:tabular-nums}
+.db small{font-size:.28em;font-family:var(--mono);margin-left:8px}
+.bar{height:36px;border:4px solid #16120D;background:#fff;margin:16px 0;position:relative;overflow:hidden}
+.bar b{position:absolute;inset:0 auto 0 0;width:0;background:repeating-linear-gradient(90deg,#FF3B2F 0 14px,#FFD21F 14px 28px);transition:width .35s}
+.meter ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.meter li{display:flex;justify-content:space-between;gap:12px;border-bottom:2px dashed color-mix(in srgb,var(--card-fg) 35%,transparent);padding-bottom:6px;font-size:15px}
+.meter li b{font-family:var(--mono);font-weight:800;white-space:nowrap}
+.log{min-height:3.2em;font-weight:800;margin-top:14px}
+
+/* boneless */
+.cousin{margin-inline:calc(-1*clamp(16px,4vw,48px));padding-inline:clamp(16px,4vw,48px);padding-block:84px;margin-top:84px;background:var(--pink);color:#16120D;border-block:5px solid #16120D}
+:root[data-theme="dark"] .cousin{background:#3A1F2A;color:#FFE3EC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cousin{background:#3A1F2A;color:#FFE3EC}}
+.cousin .kicker{background:#16120D;color:#FFB3C7}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:34px}
+.cousin .stage2{position:relative;min-width:0}
+.cousin .stage2 svg{width:100%;height:auto;display:block;overflow:visible;cursor:grab;touch-action:none}
+.blob{transform-origin:50% 95%;transition:transform .25s cubic-bezier(.3,2.2,.5,1)}
+.sign{position:absolute;top:2%;right:0;background:#fff;color:#16120D;border:4px solid #16120D;padding:8px 12px;font-family:var(--display);font-size:15px;transform:rotate(6deg);text-transform:uppercase;box-shadow:4px 4px 0 #16120D}
+.facts{display:grid;gap:12px;margin:22px 0 26px;padding:0;list-style:none}
+.facts li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline}
+.facts .mono{background:#16120D;color:#FFB3C7;padding:3px 8px;white-space:nowrap}
+.cousin p{margin:0;font-weight:600}
+.cousin .msg{margin-top:16px;font-weight:800;min-height:3em}
+
+/* versus */
+.tablewrap{overflow-x:auto;margin-top:36px;border:4px solid var(--line);box-shadow:8px 8px 0 var(--line);background:var(--card);color:var(--card-fg)}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{padding:14px 18px;text-align:left;border-bottom:3px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:20px;background:var(--fg);color:var(--bg)}
+td:first-child{font-weight:800}
+td.w{background:color-mix(in srgb,var(--red) 18%,transparent);font-weight:800}
+
+footer{padding-block:90px 48px;text-align:left}
+footer .big{font-family:var(--display);text-transform:uppercase;font-size:clamp(46px,11vw,150px);line-height:.9;letter-spacing:-.03em}
+footer .big em{font-style:normal;color:var(--red)}
+footer .fine{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:34px;border-top:4px solid var(--line);padding-top:18px;font-size:14px;font-weight:600}
+footer .fine p{margin:0;max-width:44em}
+
+@media (max-width:860px){
+  .hero,.cgrid,.meter{grid-template-columns:1fr}
+  .powers{grid-template-columns:1fr 1fr}
+  .stage{max-width:520px;margin-inline:auto;width:100%}
+  nav .links a.hide-s{display:none}
+}
+@media (max-width:480px){
+  .powers{grid-template-columns:1fr}
+  .pw:nth-child(n){transform:none}
+  .badge{width:90px;height:90px;font-size:12px}
+  .bubble{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="wrap">
+<nav>
+  <div class="logo">KOKOT<sup>®</sup></div>
+  <div class="links">
+    <a class="hide-s" href="#powers">Powers</a>
+    <a class="hide-s" href="#crow">Crow</a>
+    <a href="#boneless">Cousin</a>
+    <button class="btn small blue" id="navCrow" type="button">Kikirikí</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div>
+    <h1><span>Kokot</span><span class="sub">The best animal. Ruling closed.</span></h1>
+    <p class="lead">A rooster who is also a superhero, an alarm clock and a landlord. Nobody asked him to save the farm at 04:12. He did it anyway, loudly, in a cape.</p>
+    <div class="row">
+      <button class="btn" id="heroCrow" type="button">Make him crow</button>
+      <a class="btn blue" style="text-decoration:none;display:inline-block" href="#boneless">Meet the cousin</a>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="disc"></div>
+    <div class="bubble" id="bubble">Poke me. I dare you.</div>
+    <div class="badge">100% pure<br>super<br>chicken</div>
+    <svg viewBox="0 0 420 440" role="img" aria-label="Kokot the rooster wearing a blue cape and a black eye mask" id="rooSvg">
+      <g id="roo"><g class="bob">
+        <!-- tail -->
+        <path d="M290 250 C350 220 372 150 340 96 C330 150 300 175 270 205 Z" fill="#2B3BFF" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M285 262 C360 255 405 205 395 140 C370 190 330 205 280 225 Z" fill="#FF3B2F" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M280 280 C345 295 400 270 412 220 C378 250 335 252 275 250 Z" fill="#FFD21F" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <!-- legs -->
+        <path d="M175 330 V392 M235 330 V392" stroke="#FF8A00" stroke-width="12" stroke-linecap="round"/>
+        <path d="M175 392 L140 400 M175 392 L158 412 M175 392 L186 413 M235 392 L200 400 M235 392 L218 412 M235 392 L246 413" stroke="#FF8A00" stroke-width="9" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="205" cy="262" rx="108" ry="88" fill="#fff" stroke="#16120D" stroke-width="6"/>
+        <!-- neck + head -->
+        <path d="M118 215 C108 170 118 130 150 108 L196 150 C190 190 200 200 210 215 Z" fill="#fff" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <circle cx="148" cy="112" r="50" fill="#fff" stroke="#16120D" stroke-width="6"/>
+        <!-- comb -->
+        <g fill="#FF3B2F" stroke="#16120D" stroke-width="6"><circle cx="130" cy="64" r="17"/><circle cx="153" cy="55" r="19"/><circle cx="176" cy="68" r="16"/></g>
+        <!-- beak -->
+        <path d="M104 106 L58 122 L104 138 Z" fill="#FF8A00" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <!-- wattle -->
+        <path d="M106 140 C96 170 122 178 124 150 Z" fill="#FF3B2F" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <!-- mask -->
+        <path d="M96 98 C120 84 170 84 198 98 L200 126 C170 138 126 138 96 126 Z" fill="#16120D"/>
+        <ellipse cx="128" cy="111" rx="9" ry="10" fill="#fff"/><circle cx="130" cy="112" r="4" fill="#16120D"/>
+        <ellipse cx="170" cy="111" rx="9" ry="10" fill="#fff"/><circle cx="172" cy="112" r="4" fill="#16120D"/>
+        <path d="M110 90 L140 100 M184 90 L158 100" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0"/>
+        <!-- cape -->
+        <g class="cape">
+          <path d="M170 175 C240 140 330 175 392 270 C350 262 336 290 345 322 C300 292 262 300 230 290 C214 240 196 210 170 175 Z" fill="#2B3BFF" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+          <path d="M260 215 C300 225 335 250 360 275" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".45"/>
+        </g>
+        <circle cx="178" cy="182" r="11" fill="#FFD21F" stroke="#16120D" stroke-width="6"/>
+        <!-- wing -->
+        <path d="M185 250 C240 225 275 255 262 300 C225 318 190 300 185 250 Z" fill="#fff" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <!-- emblem -->
+        <path d="M128 232 H190 V266 C190 286 160 298 159 298 C158 298 128 286 128 266 Z" fill="#FFD21F" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+        <text x="159" y="281" text-anchor="middle" font-family="Dela Gothic One, Arial Black, sans-serif" font-size="36" fill="#FF3B2F" stroke="#16120D" stroke-width="2">K</text>
+      </g></g>
+    </svg>
+  </div>
+</header>
+</div>
+
+<div class="ticker" aria-hidden="true"><div>
+  <span>Up at 04:12</span><i>●</i><span>No snooze button</span><i>●</i><span>Cape included</span><i>●</i><span>Zero bones missing</span><i>●</i><span>Best animal</span><i>●</i><span>Up at 04:12</span><i>●</i><span>No snooze button</span><i>●</i><span>Cape included</span><i>●</i><span>Zero bones missing</span><i>●</i><span>Best animal</span><i>●</i>
+  <span>Up at 04:12</span><i>●</i><span>No snooze button</span><i>●</i><span>Cape included</span><i>●</i><span>Zero bones missing</span><i>●</i><span>Best animal</span><i>●</i><span>Up at 04:12</span><i>●</i><span>No snooze button</span><i>●</i><span>Cape included</span><i>●</i><span>Zero bones missing</span><i>●</i><span>Best animal</span><i>●</i>
+</div></div>
+
+<div class="wrap">
+<section id="powers">
+  <span class="kicker mono">Spec sheet</span>
+  <h2>Four superpowers</h2>
+  <p class="intro">Measured on a farm, by a very nervous intern, from behind a fence.</p>
+  <div class="powers">
+    <article class="pw"><span class="mono">Power 1</span><div class="num">04:12</div><h3>Punctuality</h3><p>Crows at sunrise minus a few minutes, because sunrise should be on time too.</p></article>
+    <article class="pw"><span class="mono">Power 2</span><div class="num">110 dB</div><h3>Voice</h3><p>Louder than a lawnmower. Has never once been asked to lower it.</p></article>
+    <article class="pw"><span class="mono">Power 3</span><div class="num">14</div><h3>Hens supervised</h3><p>Manages all of them without a single meeting. Mostly by standing on a fence.</p></article>
+    <article class="pw"><span class="mono">Power 4</span><div class="num">360°</div><h3>Head turn</h3><p>Sees the fox, the neighbour and your doubts. All at once.</p></article>
+  </div>
+</section>
+
+<section id="crow">
+  <span class="kicker mono">Interactive</span>
+  <h2>The Crow-o-meter</h2>
+  <p class="intro">Press the button. Kokot does the rest. Your neighbours have been notified.</p>
+  <div class="meter">
+    <div class="panel">
+      <span class="mono">Current volume</span>
+      <div class="db"><span id="dbVal">0</span><small>dB</small></div>
+      <div class="bar" aria-hidden="true"><b id="bar"></b></div>
+      <button class="btn" id="crowBtn" type="button">Kikirikí!</button>
+      <div class="log" id="log" aria-live="polite">Waiting for sunrise. Or a button.</div>
+    </div>
+    <div class="panel">
+      <span class="mono">Reference levels</span>
+      <ul>
+        <li><span>Whisper</span><b>30 dB</b></li>
+        <li><span>Normal talk</span><b>60 dB</b></li>
+        <li><span>Lawnmower</span><b>90 dB</b></li>
+        <li><span>Kokot, mid-crow</span><b>110 dB</b></li>
+        <li><span>Your alarm clock, defeated</span><b>0 dB</b></li>
+      </ul>
+      <p style="margin:18px 0 0;font-weight:600">Crows today: <b class="mono" id="count" style="font-size:16px">0</b></p>
+      <p style="margin:6px 0 0;font-size:14px;opacity:.8">Sound plays after you press the button. Turn the volume to a level your neighbours can survive.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="cousin" id="boneless">
+  <div class="wrap">
+    <span class="kicker mono">Family</span>
+    <h2>Meet cousin Boneless</h2>
+    <div class="cgrid">
+      <div class="stage2" id="stage2">
+        <div class="sign">0 bones.<br>0 regrets.</div>
+        <svg viewBox="0 0 400 330" role="img" aria-label="Boneless, a floppy pink blob with cow spots, a chicken beak and a tiny comb" id="blobSvg">
+          <ellipse cx="200" cy="312" rx="130" ry="12" fill="#16120D" opacity=".18"/>
+          <g class="blob" id="blob">
+            <path d="M68 262 C30 160 90 92 190 92 C300 92 358 170 330 262 C318 300 270 304 200 304 C128 304 82 300 68 262 Z" fill="#FFE3EC" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+            <!-- cow spots -->
+            <path d="M100 150 C122 126 160 134 154 164 C148 190 100 188 100 150 Z" fill="#16120D"/>
+            <path d="M250 214 C280 196 322 214 312 246 C300 272 244 262 250 214 Z" fill="#16120D"/>
+            <path d="M158 250 C170 238 196 242 192 262 C186 278 152 272 158 250 Z" fill="#16120D"/>
+            <!-- horns -->
+            <path d="M126 104 C108 78 112 60 128 56 C130 72 140 84 150 96 Z" fill="#fff" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+            <path d="M268 100 C290 76 288 58 272 54 C268 70 260 82 250 94 Z" fill="#fff" stroke="#16120D" stroke-width="6" stroke-linejoin="round"/>
+            <!-- tiny comb -->
+            <g fill="#FF3B2F" stroke="#16120D" stroke-width="5"><circle cx="186" cy="88" r="11"/><circle cx="206" cy="84" r="13"/><circle cx="226" cy="90" r="10"/></g>
+            <!-- eyes -->
+            <circle cx="170" cy="150" r="23" fill="#fff" stroke="#16120D" stroke-width="5"/><circle id="pupilL" cx="174" cy="154" r="9" fill="#16120D"/>
+            <circle cx="236" cy="146" r="17" fill="#fff" stroke="#16120D" stroke-width="5"/><circle id="pupilR" cx="238" cy="148" r="7" fill="#16120D"/>
+            <!-- beak and snout -->
+            <path d="M184 188 L244 188 C250 214 224 226 214 226 C204 226 178 214 184 188 Z" fill="#FF8A00" stroke="#16120D" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="203" cy="200" r="3.5" fill="#16120D"/><circle cx="225" cy="200" r="3.5" fill="#16120D"/>
+            <path d="M200 238 C212 252 228 240 236 228" stroke="#16120D" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <!-- floppy arms -->
+            <path class="arm" d="M72 230 C36 236 40 276 26 272" fill="none" stroke="#16120D" stroke-width="9" stroke-linecap="round"/>
+            <path class="arm" d="M328 226 C366 226 360 270 376 268" fill="none" stroke="#16120D" stroke-width="9" stroke-linecap="round"/>
+            <!-- feet -->
+            <ellipse cx="148" cy="304" rx="30" ry="12" fill="#FF8A00" stroke="#16120D" stroke-width="5"/>
+            <ellipse cx="256" cy="304" rx="30" ry="12" fill="#FF8A00" stroke="#16120D" stroke-width="5"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <p>Half cow, half chicken, completely without structure. Kokot's cousin lives in a state of permanent, cheerful slump and has never held a posture in his life.</p>
+        <ul class="facts">
+          <li><span class="mono">Born</span><span>At a farm fence, after a very confusing family dinner.</span></li>
+          <li><span class="mono">Says</span><span>"Moo-ck." Nobody has asked him to clarify.</span></li>
+          <li><span class="mono">Skill</span><span>Fits under any door. Has tried all of them.</span></li>
+          <li><span class="mono">Weakness</span><span>Chairs. Stairs. Standing up.</span></li>
+        </ul>
+        <button class="btn" id="bonesBtn" type="button">Add bones</button>
+        <p class="msg" id="msg" aria-live="polite">Move your mouse over him. He enjoys the attention.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+<section id="versus">
+  <span class="kicker mono">Head to head</span>
+  <h2>Kokot vs. Boneless</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Category</th><th>Kokot</th><th>Boneless</th></tr></thead>
+      <tbody>
+        <tr><td>Posture</td><td class="w">Perfect. Chest out, always.</td><td>Puddle</td></tr>
+        <tr><td>Morning routine</td><td class="w">Crows at 04:12</td><td>Is still asleep somewhere in the barn</td></tr>
+        <tr><td>Cape</td><td class="w">Yes, blue, windproof</td><td>Slides off immediately</td></tr>
+        <tr><td>Hugs</td><td>Not recommended</td><td class="w">Exceptional, bone-free</td></tr>
+        <tr><td>Hide and seek</td><td>Cannot hide, too loud</td><td class="w">Undefeated, lives in a drawer</td></tr>
+        <tr><td>Overall</td><td class="w">Superchicken</td><td class="w">Best cousin</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="big">All hail<br><em>Kokot</em></div>
+  <div class="fine">
+    <p>Yes, we know what the word also means in Slovak. The rooster does not care, has never cared, and would crow about it at 04:12.</p>
+    <p class="mono">Kokot® is a registered superchicken. Boneless is a registered cousin.</p>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var lines=["Poke me. I dare you.","KIKIRIKÍ!","I am the alarm clock.","The cape is not optional.","Have you met my cousin?","04:12. Get up.","Best animal. Next question.","Hens, report.","Is that a fox? It is not a fox.","I do not have a snooze button."];
+  var bubble=document.getElementById('bubble'), roo=document.getElementById('roo'), rooSvg=document.getElementById('rooSvg');
+  var count=0, ctx=null;
+
+  function audio(){
+    try{
+      if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();}
+      if(ctx.state==='suspended')ctx.resume();
+      return ctx;
+    }catch(e){return null;}
+  }
+  /* four-note rooster crow: ki-ki-ri-kííí */
+  function crowSound(){
+    var c=audio(); if(!c)return;
+    var t=c.currentTime, notes=[[520,.0,.16],[640,.18,.16],[780,.36,.18],[1000,.58,.8]];
+    notes.forEach(function(n,i){
+      var o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
+      o.type='sawtooth'; f.type='bandpass'; f.frequency.value=1400; f.Q.value=1.2;
+      var s=t+n[1];
+      o.frequency.setValueAtTime(n[0],s);
+      o.frequency.exponentialRampToValueAtTime(i===3?n[0]*1.35:n[0]*1.12,s+n[2]);
+      if(i===3){o.frequency.exponentialRampToValueAtTime(n[0]*.7,s+n[2]+.2)}
+      g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.16,s+.03);
+      g.gain.exponentialRampToValueAtTime(.001,s+n[2]+(i===3?.25:.04));
+      o.connect(f); f.connect(g); g.connect(c.destination);
+      o.start(s); o.stop(s+n[2]+.35);
+    });
+  }
+
+  var logs=["Neighbour has opened a window.","A hen woke up and said nothing.","The sun, informed, rose.","Dog next door is now also awake.","Somebody dropped a coffee.","Nearby alarm clock resigned."];
+  var dbEl=document.getElementById('dbVal'), bar=document.getElementById('bar'), logEl=document.getElementById('log'), countEl=document.getElementById('count');
+
+  function crow(){
+    count++; countEl.textContent=count;
+    crowSound();
+    roo.classList.remove('shake'); void roo.getBoundingClientRect(); roo.classList.add('shake');
+    bubble.textContent=lines[1+Math.floor(Math.random()*(lines.length-1))];
+    var target=104+Math.floor(Math.random()*13);
+    var n=0, steps=14, id=setInterval(function(){
+      n++; var v=Math.round(target*n/steps);
+      dbEl.textContent=v; bar.style.width=Math.min(100,v/120*100)+'%';
+      if(n>=steps){clearInterval(id);setTimeout(function(){
+        var cur=+dbEl.textContent, k=0, d=setInterval(function(){
+          k++; var v2=Math.max(0,Math.round(cur*(1-k/18)));
+          dbEl.textContent=v2; bar.style.width=(v2/120*100)+'%';
+          if(k>=18)clearInterval(d);
+        },60);
+      },900);}
+    },28);
+    logEl.textContent=logs[Math.floor(Math.random()*logs.length)];
+  }
+  ['navCrow','heroCrow','crowBtn'].forEach(function(id){document.getElementById(id).addEventListener('click',crow)});
+  rooSvg.addEventListener('click',crow);
+
+  /* Boneless: squish toward the pointer, eyes follow */
+  var st2=document.getElementById('stage2'), blob=document.getElementById('blob');
+  var pL=document.getElementById('pupilL'), pR=document.getElementById('pupilR');
+  var msg=document.getElementById('msg'), bonesTries=0;
+  var bonesLines=[
+    "Bones installed. Boneless has politely declined them.",
+    "Bones fell out. Nobody saw where.",
+    "He stood up for 0.4 seconds. A proud moment.",
+    "Update: the bones are now in the cow part. It's complicated.",
+    "Fine. Boneless is better without bones. Moving on."
+  ];
+  function move(e){
+    var r=st2.getBoundingClientRect(), x=((e.clientX-r.left)/r.width-.5)*2, y=((e.clientY-r.top)/r.height-.5)*2;
+    x=Math.max(-1.4,Math.min(1.4,x)); y=Math.max(-1.4,Math.min(1.4,y));
+    blob.style.transform='skewX('+(-x*9)+'deg) scale('+(1+Math.abs(x)*.05)+','+(1-Math.abs(x)*.06-Math.max(0,-y)*.03)+')';
+    pL.setAttribute('cx',174+x*7); pL.setAttribute('cy',154+y*6);
+    pR.setAttribute('cx',238+x*5); pR.setAttribute('cy',148+y*5);
+  }
+  function rest(){blob.style.transform='';pL.setAttribute('cx',174);pL.setAttribute('cy',154);pR.setAttribute('cx',238);pR.setAttribute('cy',148)}
+  st2.addEventListener('pointermove',move);
+  st2.addEventListener('pointerleave',rest);
+  st2.addEventListener('pointerdown',function(){blob.style.transform='scale(1.12,.74)';msg.textContent='Squish. He liked that.'});
+  st2.addEventListener('pointerup',function(){setTimeout(rest,150)});
+  document.getElementById('bonesBtn').addEventListener('click',function(){
+    msg.textContent=bonesLines[Math.min(bonesTries,bonesLines.length-1)];
+    if(bonesTries<bonesLines.length-1)bonesTries++;
+    blob.style.transform='scale(1.08,.8)';setTimeout(rest,260);
+  });
+})();
+</script>
