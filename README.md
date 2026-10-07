@@ -23,15 +23,6 @@ Potraži `[UPISATI` u svim datotekama:
 1. Spremi fotografije u mapu `images/` (JPG ili WebP, širine oko 1000 px, do ~200 KB).
 2. U `index.html` pronađi komentare `FOTOGRAFIJA:` i zamijeni `<div class="photo-placeholder">…</div>` naznačenim `<img>` retkom.
 
-## Kontakt-obrazac
-
-GitHub Pages ne može sam slati e-poštu. Besplatno rješenje je [Formspree](https://formspree.io):
-
-1. Registriraj se, izradi novi obrazac i kopiraj njegov endpoint (npr. `https://formspree.io/f/abcdwxyz`).
-2. U `index.html` zamijeni `https://formspree.io/f/UPISATI_ID` tim endpointom.
-
-Dok to ne napraviš, obrazac otvara posjetiteljev program za e-poštu s ispunjenom porukom (na adresu iz kontakt-podataka).
-
 ## Struktura
 
 ```
@@ -41,7 +32,7 @@ kolacici.html              predložak
 impressum.html             predložak
 404.html
 css/style.css              boje i fontovi su na vrhu u :root
-js/main.js                 izbornik, animacije, obrazac
+js/main.js                 izbornik, animacije
 images/og-image.png        slika za dijeljenje na društvenim mrežama
 favicon.svg / .ico / .png
 ```

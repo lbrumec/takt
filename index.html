@@ -251,49 +251,6 @@
             </li>
           </ul>
         </div>
-
-        <!--
-          OBRAZAC: GitHub Pages ne može sam slati e-poštu.
-          Upiši svoj Formspree endpoint u "action" (npr. https://formspree.io/f/abcdwxyz).
-          Dok to ne učiniš, obrazac otvara korisnikov program za e-poštu s ispunjenom porukom.
-          Upute su u datoteci README.md.
-        -->
-        <form class="contact-form reveal" id="kontakt-obrazac" action="https://formspree.io/f/UPISATI_ID" method="POST" novalidate>
-          <input type="hidden" name="_subject" value="Nova poruka s web-stranice TAKT">
-          <!-- zamka za spam-botove -->
-          <div class="hp" aria-hidden="true">
-            <label for="f-web">Ne ispunjavaj ovo polje</label>
-            <input type="text" id="f-web" name="_gotcha" tabindex="-1" autocomplete="off">
-          </div>
-
-          <div class="field">
-            <label for="f-ime">Ime i prezime</label>
-            <input type="text" id="f-ime" name="ime" autocomplete="name" required aria-describedby="f-ime-err">
-            <p class="field-error" id="f-ime-err" aria-live="polite"></p>
-          </div>
-
-          <div class="field">
-            <label for="f-email">E-mail</label>
-            <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required aria-describedby="f-email-err">
-            <p class="field-error" id="f-email-err" aria-live="polite"></p>
-          </div>
-
-          <div class="field">
-            <label for="f-poruka">Poruka</label>
-            <textarea id="f-poruka" name="poruka" rows="6" required aria-describedby="f-poruka-hint f-poruka-err"></textarea>
-            <p class="field-hint" id="f-poruka-hint">Dovoljno je nekoliko rečenica o tome zašto se javljaš.</p>
-            <p class="field-error" id="f-poruka-err" aria-live="polite"></p>
-          </div>
-
-          <div class="field field-check">
-            <input type="checkbox" id="f-privola" name="privola" value="da" required aria-describedby="f-privola-err">
-            <label for="f-privola">Pristajem da se moji osobni podaci (ime, e-mail i sadržaj poruke) obrađuju isključivo u svrhu odgovora na ovaj upit, u skladu s <a href="politika-privatnosti.html">Politikom privatnosti</a>.</label>
-            <p class="field-error" id="f-privola-err" aria-live="polite"></p>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">Pošalji poruku</button>
-          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-        </form>
       </div>
     </section>
 
