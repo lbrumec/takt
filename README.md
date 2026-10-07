@@ -14,7 +14,7 @@ Statična stranica (HTML, CSS, JavaScript, bez frameworka) spremna za GitHub Pag
 
 Potraži `[UPISATI` u svim datotekama:
 
-- `index.html` – cijena, e-mail (na dva mjesta: tekst i `mailto:`), telefon (ili obriši taj redak)
+- `index.html` – cijena, e-mail (na dva mjesta: tekst i `mailto:`)
 - `impressum.html`, `politika-privatnosti.html`, `kolacici.html` – podaci o obrtu
 - `index.html` – zamijeni `https://www.example.com/` stvarnom adresom (canonical, og:url, og:image)
 
